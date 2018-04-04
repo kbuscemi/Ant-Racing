@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import Ant from './Ant/Ant'
 
 class App extends Component {
 
@@ -38,17 +39,25 @@ class App extends Component {
 
 
   render() {
-    // set up method to show ants
+    // set up render method to show ants
+    
+    let renderAnts = () => {
+       //setting showAntArr to state
+        let showAntArr = this.state.ants;
 
-    // let showAnts = () => {
-    //   let showAntArr = this.state.ants;
+      
+        if(showAntArr){
+          //mapping through ant object within Ant componenet and returning ant info 
+          return showAntArr.map((ant) => <Ant key={ant.name} {...ant}/> )
+        }
 
-    // }
-
-    return (
-      <div className='App'>
+      }
+      
+      return (
+        <div className='App'>
         <header>Antstats</header>
-        {showAnts()}
+
+        {renderAnts()}
       </div>
     );
   }

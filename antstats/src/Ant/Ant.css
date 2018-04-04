@@ -1,0 +1,23 @@
+li {
+    list-style-type: none;
+    padding-bottom: 12px;
+    font-size: 18px;
+}
+
+.box {
+    width: 70vw;
+    margin: 20px 0 0 20px;
+    padding-top: 15px;
+}
+
+ul {
+    border: 1px solid blue;
+    margin-left: 400px;
+    padding-left: 0;
+
+}
+
+h5 {
+  margin:  15px 0 10px 0;  
+  font-size: 20px;
+}
