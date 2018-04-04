@@ -1,6 +1,15 @@
 .App {
   text-align: center;
   font-size: 36px;
-  margin-top: 20px;
+  margin: 0;
+  margin-bottom: 12px;
+}
+
+button {
+  padding: 11px;
+  font-size: 15px;
+  border-radius: 29%;
+  background-color: lightgray;
+  cursor: pointer;
 }
 

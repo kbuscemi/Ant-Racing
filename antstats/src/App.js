@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Ant from './Ant/Ant'
+import './generateWin.js'
 
 class App extends Component {
 
@@ -27,15 +28,28 @@ class App extends Component {
       //iterate through ant state arr - add all data to each ant
       for(var i = 0; i < antArr.length; i++) {
         console.log(antArr)
-        // this.updateAntStats(antArr[i], 0, 'Not yet run')
       }
     })
     .catch(err => console.log(err))
   }
 
-  // updateAntStats = () => {
 
-  // }
+  
+  calculate(){
+    let antArr = this.state.ants;
+    
+    if (antArr > 0) {
+      //iterate through arr to calculate odds
+      for(var i = 0; i < antArr.length; i++) {
+        //provide callback function for likelyhood of winning/response
+      }
+    }
+  }
+  
+  // calling generateAntWinLikelihoodCalculator method which will calculate likelihood of winning
+  generateAntWinLikelihoodCalculator() {
+  }
+  
 
 
   render() {
@@ -55,9 +69,11 @@ class App extends Component {
       
       return (
         <div className='App'>
-        <header>Antstats</header>
-
-        {renderAnts()}
+          <h2>Ant Race</h2>
+            <div>
+              <button>Run</button>
+            </div>
+          {renderAnts()}
       </div>
     );
   }

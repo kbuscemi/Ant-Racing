@@ -9,7 +9,7 @@ class Ant extends Component {
         var showInfo = () => {
             return (
                 <ul>
-                    <li className='name'><h5>{name}</h5></li>
+                    <li><h5>{name}</h5></li>
                     <li>Color:&nbsp;{color}</li>
                     <li>Length:&nbsp;{length}</li>
                     <li>Weight:&nbsp;{weight}</li>
@@ -22,8 +22,7 @@ class Ant extends Component {
             {showInfo()}
         </div>
     )
-  }
-
+    }
 }
 
 export default Ant;
