@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import './App.css';
 import Ant from './Ant/Ant'
-import './generateWin.js'
+import generateAntWinLikelihoodCalculator from './generateAntWin.js'
 
 class App extends Component {
 
   constructor() {
     super();
     this.state = {
-      ants: []
-      // status: 'Not yet run'
+      ants: [],
+      currentStatus: 'Not yet run'
     }
   }
 
@@ -33,22 +33,41 @@ class App extends Component {
     .catch(err => console.log(err))
   }
 
+  loadStatus()  {
+    //using object.assign to copy values in ant state. targeting an empty object
+    var antCopy = Object.assign({}, this.state);
+    // splice ant arr to update array with the status
+    antCopy.ants = antCopy.ants.splice();
+    //iterate through array and return updated ant info each time it renders. 
+    //calling setState inside for loops will render state multiple times loadStatus function is called.
+    for (var i = 0; i < antCopy.ants.length; i++) {
+      antCopy.ants[i] = Object.assign({}, antCopy.ants[i]);
+      antCopy.ants[i].status = 'Loading...'; 
+    }
+    //calling setState for currentStatus will only render once when loadStatus is called
+    this.setState(antCopy);
+    this.setState({
+      currentStatus: 'Loading...'
+    })
+
+  }
+
 
   
-  calculate(){
-    let antArr = this.state.ants;
+  // calculate(){
+  //   let antArr = this.state.ants;
     
-    if (antArr > 0) {
-      //iterate through arr to calculate odds
-      for(var i = 0; i < antArr.length; i++) {
-        //provide callback function for likelyhood of winning/response
-      }
-    }
-  }
+  //   if (antArr > 0) {
+  //     //iterate through arr to calculate odds
+  //     for(var i = 0; i < antArr.length; i++) {
+  //       //provide callback function for likelyhood of winning/response
+  //     }
+  //   }
+  // }
   
   // calling generateAntWinLikelihoodCalculator method which will calculate likelihood of winning
-  generateAntWinLikelihoodCalculator() {
-  }
+  // generateAntWinLikelihoodCalculator() {
+  // }
   
 
 
