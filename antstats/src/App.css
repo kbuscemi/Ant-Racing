@@ -6,10 +6,15 @@
 }
 
 button {
-  padding: 11px;
-  font-size: 15px;
-  border-radius: 29%;
-  background-color: lightgray;
+  font-size: 26px;
+  border: none;
+  background-color: white;
   cursor: pointer;
+  font-family: 'Tajawal', sans-serif;
+}
+
+h1 {
+  font-family: 'Faster One', cursive;
+  margin: 30px, 0, 14px, 0;
 }
 

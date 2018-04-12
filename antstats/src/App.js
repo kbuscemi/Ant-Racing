@@ -8,8 +8,8 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      ants: [],
-      status: 'Not yet run'
+      ants: []
+      // status: 'Not yet run'
     }
   }
 
@@ -62,14 +62,14 @@ class App extends Component {
       
         if(showAntArr){
           //mapping through ant object within Ant componenet and returning ant info 
-          return showAntArr.map((ant) => <Ant key={ant.name} {...ant}/> )
+          return showAntArr.map((ants) => <Ant key={ants.name} {...ants}/> )
         }
 
       }
       
       return (
         <div className='App'>
-          <h2>Ant Race</h2>
+          <h1>Ant Race</h1>
             <div>
               <button>Run</button>
             </div>
