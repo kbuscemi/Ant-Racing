@@ -11,7 +11,7 @@ class Ant extends Component {
             if(!status) {
                 return 'Not calculated yet'
             } else {
-                return 'Calculation Status:' + status
+                return status
             }
         }
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Ant from './Ant/Ant';
-import generateAntWinLikelihoodCalculator from './Utilities/generateAntWinLikelihoodCalculator.js';
+import likleyhood from './Utilities/generateAntWinLikelihoodCalculator.js';
 import orderOfAnts from './Utilities/orderOfAnts.js';
 
 
@@ -30,6 +30,7 @@ class App extends Component {
       //iterate through ant state arr - add all data to each ant
       for(var i = 0; i < antArr.length; i++) {
         console.log(antArr)
+        this.updateAntState(antArr[i])
       }
     })
     .catch(err => console.log(err))
@@ -39,7 +40,7 @@ class App extends Component {
     //using object.assign to copy values in ant state. targeting an empty object
     let antCopy = Object.assign({}, this.state);
     // splice ant arr to update array with the status
-    antCopy.ants = antCopy.ants.splice();
+    antCopy.ants = antCopy.ants.slice();
     //iterate through array and return updated ant info each time it renders. 
     for (var i = 0; i < antCopy.ants.length; i++) {
       antCopy.ants[i] = Object.assign({}, antCopy.ants[i]);
@@ -60,7 +61,7 @@ class App extends Component {
 
     let antArr = this.state.ants;
     
-    if (antArr > 0) {
+    if (antArr.length > 0) {
       //iterate through arr to calculate odds
       for(var i = 0; i < antArr.length; i++) {
         //provide waiting callback 
@@ -69,26 +70,64 @@ class App extends Component {
     }
   }
 
-  generateAntWinLikelihoodCalculator() {
-    return generateAntWinLikelihoodCalculator()
+  generateAntWinLikelihoodCalculator = () => {
+    return likleyhood()
   }  
 
-  
-  waiting = () => {
+  waiting = (antInfo) => {
     //function will call generateAntWinLikelihoodCalculator method and wait for response
     let odds = this.generateAntWinLikelihoodCalculator();
     // promise will either be resolved with a value or rejected with an error during waiting period
-    let value = new Promise(function(resolve, reject) {
+    let promise = new Promise(function(resolve, reject) {
       odds(function(chanceOfWinning) {
         resolve(chanceOfWinning)
       })
     })
-    value.then((res) => {
-      this.updateAntState();
+    promise.then((res) => {
+      this.updateAntState(antInfo, res);
     })
     .catch(err => console.log(err))
     }
+
+    updateAntState = (antData, chanceOfWinning, status) => {
+      //function provides new, updated state with rendered data
+      let newState =  Object.assign({}, this.state);
+      newState.ants = newState.ants.slice();
+
+      for (var i = 0; i < newState.ants.length; i++) {
+        //going to update antData based on ant name
+       if (newState.ants[i].name === antData.name) {
+        newState.ants[i] = Object.assign({}, newState.ants[i]);
+        newState.ants[i].status = status;
+        newState.ants[i].chanceOfWinning = chanceOfWinning;
+        this.setState(newState);
+       }
+      //  this.setState({
+      //   currentStatus: 'complete'
+      //   })
+      }
+
+      // console.log(newState);
+      this.endCalculation();
+    }
   
+    endCalculation = () => {
+      let antArr = this.state.ants;
+      let numberComplete = 0;
+
+      for(var i = 0; i < antArr.length; i++) {
+        if (antArr[i].status === 'complete') {
+          numberComplete = numberComplete + 1;
+        }
+      }
+
+      if (numberComplete === antArr.length) {
+        this.setState({
+          currentStatus: 'complete'
+        })
+        console.log('complete')
+      }
+    }
 
 
   render() {
@@ -96,12 +135,12 @@ class App extends Component {
     
     let renderAnts = () => {
        //setting showAntArr to state
-        let showAntArr = this.state.ants;
+        let antArr = this.state.ants;
         //hitting the sort function to sort ant array in descending order
-        let orderedArr = orderOfAnts(showAntArr)
+        let orderedArr = orderOfAnts(antArr);
 
       
-        if(orderedArr){
+        if (orderedArr) {
           //mapping through ant object within Ant componenet and returning ant info 
           return orderedArr.map((ants) => <Ant key={ants.name} {...ants}/> )
         }
