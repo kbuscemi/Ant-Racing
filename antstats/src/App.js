@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
-import Ant from './Ant/Ant'
-import generateAntWinLikelihoodCalculator from './generateAntWin.js'
+import Ant from './Ant/Ant';
+import generateAntWinLikelihoodCalculator from './Utilities/generateAntWinLikelihoodCalculator.js';
+import orderOfAnts from './Utilities/orderOfAnts.js';
+
 
 class App extends Component {
 
@@ -33,41 +35,59 @@ class App extends Component {
     .catch(err => console.log(err))
   }
 
-  loadStatus()  {
+  loadStatus = () => {
     //using object.assign to copy values in ant state. targeting an empty object
-    var antCopy = Object.assign({}, this.state);
+    let antCopy = Object.assign({}, this.state);
     // splice ant arr to update array with the status
     antCopy.ants = antCopy.ants.splice();
     //iterate through array and return updated ant info each time it renders. 
-    //calling setState inside for loops will render state multiple times loadStatus function is called.
     for (var i = 0; i < antCopy.ants.length; i++) {
       antCopy.ants[i] = Object.assign({}, antCopy.ants[i]);
       antCopy.ants[i].status = 'Loading...'; 
+      antCopy.ants[i].chanceOfWinning = 0;
+      //calling setState inside for loop so state renders eachtime loadStatus is called (if outside for loop data doesn't render on page)
+      this.setState(antCopy);
     }
-    //calling setState for currentStatus will only render once when loadStatus is called
-    this.setState(antCopy);
+    //calling setState for currentStatus will only render once when loadStatus is called.. good for optimization purposes. 
     this.setState({
       currentStatus: 'Loading...'
     })
-
+    console.log('loading')
+    this.beginCalculation();
   }
 
+  beginCalculation = () => {
+
+    let antArr = this.state.ants;
+    
+    if (antArr > 0) {
+      //iterate through arr to calculate odds
+      for(var i = 0; i < antArr.length; i++) {
+        //provide waiting callback 
+        this.waiting(antArr[i]);
+      }
+    }
+  }
+
+  generateAntWinLikelihoodCalculator() {
+    return generateAntWinLikelihoodCalculator()
+  }  
 
   
-  // calculate(){
-  //   let antArr = this.state.ants;
-    
-  //   if (antArr > 0) {
-  //     //iterate through arr to calculate odds
-  //     for(var i = 0; i < antArr.length; i++) {
-  //       //provide callback function for likelyhood of winning/response
-  //     }
-  //   }
-  // }
-  
-  // calling generateAntWinLikelihoodCalculator method which will calculate likelihood of winning
-  // generateAntWinLikelihoodCalculator() {
-  // }
+  waiting = () => {
+    //function will call generateAntWinLikelihoodCalculator method and wait for response
+    let odds = this.generateAntWinLikelihoodCalculator();
+    // promise will either be resolved with a value or rejected with an error during waiting period
+    let value = new Promise(function(resolve, reject) {
+      odds(function(chanceOfWinning) {
+        resolve(chanceOfWinning)
+      })
+    })
+    value.then((res) => {
+      this.updateAntState();
+    })
+    .catch(err => console.log(err))
+    }
   
 
 
@@ -77,11 +97,13 @@ class App extends Component {
     let renderAnts = () => {
        //setting showAntArr to state
         let showAntArr = this.state.ants;
+        //hitting the sort function to sort ant array in descending order
+        let orderedArr = orderOfAnts(showAntArr)
 
       
-        if(showAntArr){
+        if(orderedArr){
           //mapping through ant object within Ant componenet and returning ant info 
-          return showAntArr.map((ants) => <Ant key={ants.name} {...ants}/> )
+          return orderedArr.map((ants) => <Ant key={ants.name} {...ants}/> )
         }
 
       }
@@ -90,7 +112,7 @@ class App extends Component {
         <div className='App'>
           <h1>Ant Race</h1>
             <div>
-              <button>Run</button>
+              <button onClick={this.loadStatus}>Run</button>
             </div>
           {renderAnts()}
       </div>

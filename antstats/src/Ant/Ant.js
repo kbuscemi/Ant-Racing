@@ -4,7 +4,7 @@ import './Ant.css'
 class Ant extends Component {
     render() {
         //ES6 destructuring 'props' object into its individual const variables
-        const {name, color, length, weight, status} = this.props
+        const {name, color, length, weight, status, chanceOfWinning} = this.props
 
         //conditional rendering
         let updateStatus = () => {
@@ -13,6 +13,16 @@ class Ant extends Component {
             } else {
                 return 'Calculation Status:' + status
             }
+        }
+
+        let updateChanceOfWinning = () => {
+            if (chanceOfWinning === 0) {
+                return ' '
+            } else {
+                //rounding percentage of winning 2 decimal points
+                return 'Chance of Winning:' + (Math.round(chanceOfWinning * 100)) + '%'
+            }
+
         }
 
 
@@ -25,6 +35,7 @@ class Ant extends Component {
                     <li>Length:&nbsp;{length}</li>
                     <li>Weight:&nbsp;{weight}</li>
                     <li>Calculation Status:&nbsp;{updateStatus()}</li>
+                    <li>{updateChanceOfWinning()}</li>
                 </ul>
             )
         }
