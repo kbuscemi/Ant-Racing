@@ -9,18 +9,18 @@ class Ant extends Component {
         //conditional rendering
         let updateStatus = () => {
             if(!status) {
-                return 'Not calculated yet'
+                return 'Not Yet Run'
             } else {
                 return status
             }
         }
 
         let updateChanceOfWinning = () => {
-            if (chanceOfWinning === 0) {
+            if(chanceOfWinning === 0) {
                 return ' '
             } else {
                 //rounding percentage of winning 2 decimal points
-                return 'Chance of Winning:' + (Math.round(chanceOfWinning * 100)) + '%'
+                return 'Chance of Winning: ' + (Math.round(chanceOfWinning * 100)) + '%'
             }
 
         }
