@@ -29,18 +29,18 @@ class App extends Component {
 
       //iterate through ant state arr - add all data to each ant
       for(var i = 0; i < antArr.length; i++) {
-        console.log(antArr)
+        // console.log(antArr)
         //passing in 0 so chance of winning is initally set to 0 prior to hitting 'run'
         this.updateAntState(antArr[i], 0)
       }
     })
-    .catch(err => console.log(err))
+        .catch(err => console.log(err))
   }
 
   loadStatus = () => {
     //using object.assign to copy values in ant state. targeting an empty object
     let antCopy = Object.assign({}, this.state);
-    // splice ant arr to update array with the status
+    // slice ant arr to update array when this function is ran
     antCopy.ants = antCopy.ants.slice();
     //iterate through array and return updated ant info each time it renders. 
     for (var i = 0; i < antCopy.ants.length; i++) {
@@ -54,7 +54,7 @@ class App extends Component {
     this.setState({
       currentStatus: 'In Progress...'
     })
-    console.log('In Progress...')
+    // console.log('In Progress...')
     this.beginCalculation();
   }
 
@@ -86,69 +86,69 @@ class App extends Component {
     })
     promise.then((res) => {
       //passing in antInfo as a param to use data to generate chances of winning and update info
-      //passing in complete for when updating status 
+      //passing in calculated for when updating status 
       this.updateAntState(antInfo, res, 'Calculated');
     })
       .catch(err => console.log(err))
-    }
+  }
 
-    updateAntState = (antData, chanceOfWinning, status) => {
-      //function provides new, updated state with rendered data
-      let newState =  Object.assign({}, this.state);
-      newState.ants = newState.ants.slice();
+  updateAntState = (antData, chanceOfWinning, status) => {
+    //function provides new, updated state with rendered data
+    let newState =  Object.assign({}, this.state);
+    newState.ants = newState.ants.slice();
 
-      for (var i = 0; i < newState.ants.length; i++) {
-        //going to update antData based on ant name
-       if (newState.ants[i].name === antData.name) {
-        newState.ants[i] = Object.assign({}, newState.ants[i]);
-        newState.ants[i].status = status;
-        newState.ants[i].chanceOfWinning = chanceOfWinning;
-        this.setState(newState);
-       }
+    for (var i = 0; i < newState.ants.length; i++) {
+      //going to update antData based on ant name
+      if (newState.ants[i].name === antData.name) {
+      newState.ants[i] = Object.assign({}, newState.ants[i]);
+      newState.ants[i].status = status;
+      newState.ants[i].chanceOfWinning = chanceOfWinning;
+      this.setState(newState);
       }
-      this.endCalculation();
     }
+    this.endCalculation();
+  }
   
-    endCalculation = () => {
-      let antArr = this.state.ants;
-      let numberComplete = 0;
+  endCalculation = () => {
+    let antArr = this.state.ants;
+    let numberComplete = 0;
 
-      for(var i = 0; i < antArr.length; i++) {
-        if (antArr[i].status === 'Calculated') {
-          numberComplete = numberComplete + 1;
-        }
-      }
-
-      if (numberComplete === antArr.length) {
-        this.setState({
-          currentStatus: 'Calculated'
-        })
-        console.log('Calculated')
+    for(var i = 0; i < antArr.length; i++) {
+      if (antArr[i].status === 'Calculated') {
+        numberComplete = numberComplete + 1;
       }
     }
+
+    if (numberComplete === antArr.length) {
+      this.setState({
+        currentStatus: 'Calculated'
+      })
+      console.log('Calculated')
+    }
+  }
 
 
   render() {
     // set up render method to show ants
     let renderAnts = () => {
        //setting showAntArr to state
-        let antArr = this.state.ants;
-        //hitting the sort function to sort ant array in descending order
-        let orderedArr = orderOfAnts(antArr);
-      
-        if (orderedArr) {
-          //mapping through ant object within Ant componenet and returning ant info 
-          return orderedArr.map((ants) => <Ant key={ants.name} {...ants}/> )
-        }
+      let antArr = this.state.ants;
+      //hitting the sort function to sort ant array in descending order
+      let orderedArr = orderOfAnts(antArr);
+    
+      if (orderedArr) {
+        //mapping through ant object within Ant componenet and returning ant info 
+        return orderedArr.map((ants) => <Ant key={ants.name} {...ants}/> )
       }
+    }
 
-      return (
-        <div className='App'>
-          <h1>Ant Race</h1>
-            <div>
-              <button onClick={this.loadStatus}>Run</button>
-            </div>
-          {renderAnts()}
+    return (
+      <div className='App'>
+        <h1>Ant Race</h1>
+          <div>
+            <button onClick={this.loadStatus}>Run</button>
+          </div>
+        {renderAnts()}
       </div>
     );
   }

@@ -30,16 +30,15 @@ class Ant extends Component {
             return (
                 <ul>
                     <h4>{name}</h4>
-                    <li><img src="https://i.imgur.com/z0yl3jW.jpg" alt='ant' /></li>
+                    <li><img src="https://i.imgur.com/CYv8i59.jpg" alt='ant running' /></li>
                     <li>Color:&nbsp;{color}</li>
                     <li>Length:&nbsp;{length}</li>
                     <li>Weight:&nbsp;{weight}</li>
-                    <li>Calculation Status:&nbsp;{updateStatus()}</li>
+                    <li>Status:&nbsp;{updateStatus()}</li>
                     <li>{updateChanceOfWinning()}</li>
                 </ul>
             )
         }
-
     return (
         <div className='box'>
             {showInfo()}
