@@ -144,9 +144,9 @@ class App extends Component {
 
     return (
       <div className='App'>
-        <h1>Ant Race</h1>
+        <h1>Ant Racing</h1>
           <div>
-            <button onClick={this.loadStatus}>Run</button>
+            <button onClick={this.loadStatus}>Ready, Set, Go!</button>
           </div>
         {renderAnts()}
       </div>

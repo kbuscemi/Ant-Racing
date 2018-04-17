@@ -11,6 +11,16 @@ button {
   background-color: white;
   cursor: pointer;
   font-family: 'Tajawal', sans-serif;
+  font-weight: 700;
+  padding-top: 9px;
+}
+
+button:hover {
+  color: green;
+}
+
+button:focus {
+  outline: 0;
 }
 
 h1 {
